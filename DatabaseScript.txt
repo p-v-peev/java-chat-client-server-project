@@ -1,0 +1,107 @@
+DROP DATABASE IF EXISTS circuit;
+
+
+
+CREATE DATABASE circuit;
+
+
+
+USE circuit;
+
+
+
+
+
+CREATE TABLE users(
+
+
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+
+	email NVARCHAR(30) NOT NULL,
+
+	password NVARCHAR(35) NOT NULL,
+
+	firstName NVARCHAR(20) NOT NULL,
+	lastName NVARCHAR(20) NOT NULL,
+
+	phoneNumber NVARCHAR(20) NULL,
+
+	address NVARCHAR(50) NULL,
+
+	avatar MEDIUMBLOB NOT NULL,
+
+	lastLogin DATE NOT NULL,
+
+	IP NVARCHAR(40) NOT NULL
+
+
+)ENGINE = InnoDB;
+
+
+
+CREATE INDEX users_email
+ON users(email);
+
+
+
+CREATE TABLE friends(
+
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+
+	userID INT NOT NULL,
+
+	friendID INT NOT NULL,
+
+	FOREIGN KEY (userID) REFERENCES users(ID)
+
+	ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE = InnoDB;
+
+
+
+CREATE INDEX friends_ID
+ON friends(userID);
+
+
+
+CREATE TABLE undelivered(
+
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	userID INT NOT NULL,
+
+	message NVARCHAR(5000),
+	senderID INT NOT NULL,
+	FOREIGN KEY (userID) REFERENCES users(ID)
+
+	ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE = InnoDB;
+
+
+
+CREATE INDEX undelivered_ID
+ON undelivered(userID);
+
+
+
+CREATE TABLE requests(
+
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+
+	fromID INT NOT NULL,
+	toID INT NOT NULL,
+
+	FOREIGN KEY (fromID) REFERENCES users(ID)
+
+	ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE = InnoDB;
+
+
+
+CREATE INDEX requests_ID
+ON requests(toID);
+
+
+GRANT DELETE, EXECUTE, INSERT, SELECT, UPDATE
+ON circuit.*
+TO 'server'@'localhost'
+IDENTIFIED BY 'server';	

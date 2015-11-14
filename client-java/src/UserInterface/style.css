@@ -1,0 +1,5 @@
+#center{
+	-fx-background-image: url("background.jpg");
+	-fx-border-color: "#0078FF";
+	-fx-border-width: 2px; 
+}
